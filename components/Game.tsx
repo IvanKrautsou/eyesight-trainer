@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {GameOptions} from "../pages";
 import {library} from "../public/words";
 import {chooseWords, getParts} from "./game-utils";
@@ -14,8 +14,6 @@ export default function Game({options: {speed, lettersAmount, wordsAmount, start
     const [partOne, setPartOne] = useState('')
     const [partTwo, setPartTwo] = useState('')
     const [distance, setDistance] = useState(startDistance + TILDA_SIZE / 2)
-    const distanceRef = useRef(distance)
-    distanceRef.current = distance
 
     const play = (words: string[], iterationsLeft: number) => {
         if (iterationsLeft < 0) {
@@ -24,7 +22,7 @@ export default function Game({options: {speed, lettersAmount, wordsAmount, start
         const [partOne, partTwo] = getParts(words[iterationsLeft]);
         setPartOne(partOne);
         setPartTwo(partTwo);
-        setDistance(distanceRef.current + increaseDistance)
+        setDistance(prev => prev + increaseDistance)
         setTimeout(play.bind(null, words, iterationsLeft - 1), speed * 1000);
     };
 
